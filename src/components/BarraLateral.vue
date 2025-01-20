@@ -1,7 +1,25 @@
 <template>
   <header>
     <h1><img src="../assets/logo.png" alt="" /></h1>
-    <button class="button" @click="alterarTema">{{ textoDoBotao }}</button>
+    <div class="has-text-centered">
+      <button class="button" @click="alterarTema">{{ textoDoBotao }}</button>
+    </div>
+    <nav class="panel mt-5">
+      <ul class="is-flex is-flex-direction-column">
+        <li>
+          <router-link to="/" class="link">
+            <i class="fas fa-tasks"></i>
+            tarefas
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/projetos" class="link">
+            <i class="fas fa-project-diagram"></i>
+            projetos
+          </router-link>
+        </li>
+      </ul>
+    </nav>
   </header>
 </template>
 
@@ -12,12 +30,12 @@ export default defineComponent({
   name: "BarraLateral",
   emits: ["aoTemaAlterado"],
   computed: {
-    textoDoBotao () {
-      if(this.modoEscuroAtivo){
-        return "Desativar Modo Escuro"
+    textoDoBotao() {
+      if (this.modoEscuroAtivo) {
+        return "Desativar Modo Escuro";
       }
-              return "Ativar Modo Escuro"
-    }
+      return "Ativar Modo Escuro";
+    },
   },
   data() {
     return {
@@ -46,5 +64,18 @@ header {
     padding: 2.5rem;
     height: auto;
   }
+}
+
+.panel li {
+    margin: 8px 0;
+}
+.link {
+    color: #fff;
+}
+.link:hover {
+    color: #FAF0CA;
+}
+.link.router-link-active {
+    color: #FAF0CA;
 }
 </style>

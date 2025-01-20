@@ -32,7 +32,7 @@ export default defineComponent({
   data() {
     return {
       tempoEmSegundos: 0,
-      cronometro: 0,
+      cronometro: null as number | null,
       cronometroRodando: false,
     };
   },
@@ -40,13 +40,15 @@ export default defineComponent({
     iniciar() {
       if (this.cronometroRodando) return;
       this.cronometroRodando = true;
-      this.cronometro = setInterval(() => {
+      this.cronometro =  window.setInterval(() => {
         this.tempoEmSegundos += 1;
       }, 1000);
     },
     finalizar() {
       this.cronometroRodando = false;
-      clearInterval(this.cronometro);
+      if (this.cronometro !== null) {
+        clearInterval(this.cronometro);
+      }
       this.$emit("aoTemporizadoFinalizado", this.tempoEmSegundos);
       this.tempoEmSegundos = 0;
     },
