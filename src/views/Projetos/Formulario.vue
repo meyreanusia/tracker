@@ -33,8 +33,9 @@ export default defineComponent({
   },
   mounted() {
     if (this.id) {
-
-      const projeto = this.store.state.projetos.find(proj => proj.id ==this.id);
+      const projeto = this.store.state.projetos.find(
+        (proj) => proj.id == this.id
+      );
       this.nomeDoProjeto = projeto?.nome || "";
     }
   },
@@ -45,7 +46,14 @@ export default defineComponent({
   },
   methods: {
     salvar() {
-      this.store.commit("ADICIONA_PROJETO", this.nomeDoProjeto);
+      if (this.id) {
+        this.store.commit("ALTERA_PROJETO", {
+          id: this.id,
+          nome: this.nomeDoProjeto,
+        });
+      } else {
+        this.store.commit("ADICIONA_PROJETO", this.nomeDoProjeto);
+      }
       // const projeto: IProjeto = {
       //   nome: this.nomeDoProjeto,
       //   id: new Date().toISOString(),
@@ -61,7 +69,6 @@ export default defineComponent({
       store,
     };
   },
-
 });
 </script>
 
