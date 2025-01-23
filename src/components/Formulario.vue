@@ -15,7 +15,7 @@
       </div>
       <div class="column is-3">
         <div class="select">
-          <select v-model="idProjeto">
+          <select v-model="idProjetos">
             <option value="">Selecione o projeto</option>
             <option
               :value="projeto.id"
@@ -35,8 +35,10 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import Temporizador from "./Temporizador.vue";
-import { useStore } from 'vuex';
-import { key } from '../store/index';
+import { useStore } from "vuex";
+import { key } from "../store/index";
+import { NOTIFICAR } from "@/store/tipo-de-mutacoes";
+import { TipoNotificacao } from "@/interfaces/INotificacao";
 
 export default defineComponent({
   // eslint-disable-next-line vue/multi-word-component-names
@@ -46,33 +48,46 @@ export default defineComponent({
   data() {
     return {
       descricao: "",
-      idProjetos: ""
+      idProjetos: "",
     };
   },
   methods: {
-    finalizarTarefa(tempoDecorrido: number): void {
-      if (this.descricao === "" && tempoDecorrido === 0) return;
 
-      this.$emit("aoSalvarTarefa", {
-        duracaoEmSegundos: tempoDecorrido,
-        descricao: this.descricao,
-        projeto: this.projetos.find(proj => proj.id == this.idProjeto )
-      });
-      this.descricao = "";
+    finalizarTarefa(tempoDecorrido: number): void {
+
+      if (this.descricao === "" && tempoDecorrido === 0) {
+        return;
+      };
+
+      if (!this.idProjetos) {
+        this.store.commit(NOTIFICAR, {
+          title: "A tarefa não foi salva",
+          texto: "Você precisa selecionar um projeto.",
+          tipo: TipoNotificacao.FALHA,
+        });
+        return
+      }
+        this.$emit("aoSalvarTarefa", {
+          duracaoEmSegundos: tempoDecorrido,
+          descricao: this.descricao,
+          projeto: this.projetos.find((proj) => proj.id == this.idProjetos),
+        });
+        this.descricao = "";
     },
   },
   setup() {
-    const store = useStore(key)
+    const store = useStore(key);
     return {
-      projetos: computed(() => store.state.projetos)
-    }
-  }
+      projetos: computed(() => store.state.projetos),
+      store,
+    };
+  },
 });
 </script>
 
 <style>
-  .formulario{
-    color:var(--texto-primario);
-    background-color: var(--bg-primario)
-  };
+.formulario {
+  color: var(--texto-primario);
+  background-color: var(--bg-primario);
+}
 </style>

@@ -49,6 +49,7 @@ export default defineComponent({
       if (this.cronometro !== null) {
         clearInterval(this.cronometro);
       }
+
       this.$emit("aoTemporizadoFinalizado", this.tempoEmSegundos);
       this.tempoEmSegundos = 0;
     },
