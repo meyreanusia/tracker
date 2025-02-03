@@ -21,10 +21,9 @@
 import { defineComponent } from "vue";
 import { useStore } from "@/store/index";
 
-// import router from '../../router/index';
 import { ALTERA_PROJETO, ADICIONA_PROJETO } from "../../store/tipo-de-mutacoes";
 import { TipoNotificacao } from "@/interfaces/INotificacao";
-import { notificacaoMixin } from "../mixins/notificar";
+import useNotificador from '@/hoocks/notificador'
 
 export default defineComponent({
   // eslint-disable-next-line vue/multi-word-component-names
@@ -34,7 +33,6 @@ export default defineComponent({
       type: String,
     },
   },
-  mixins: [notificacaoMixin],
   mounted() {
     if (this.id) {
       const projeto = this.store.state.projetos.find(
@@ -70,8 +68,10 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
+    const { notificar} = useNotificador()
     return {
       store,
+      notificar
     };
   },
 });

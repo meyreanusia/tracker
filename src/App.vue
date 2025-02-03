@@ -36,6 +36,7 @@ export default defineComponent({
       <!-- Aqui vai a vue correspondente -->
        <router-view></router-view>
     </div>
+    
   </main>
 </template>
 

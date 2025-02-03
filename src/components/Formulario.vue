@@ -37,8 +37,6 @@ import { defineComponent, computed } from "vue";
 import Temporizador from "./Temporizador.vue";
 import { useStore } from "vuex";
 import { key } from "../store/index";
-import { NOTIFICAR } from "@/store/tipo-de-mutacoes";
-import { TipoNotificacao } from "@/interfaces/INotificacao";
 
 export default defineComponent({
   // eslint-disable-next-line vue/multi-word-component-names
@@ -52,27 +50,17 @@ export default defineComponent({
     };
   },
   methods: {
-
     finalizarTarefa(tempoDecorrido: number): void {
-
       if (this.descricao === "" && tempoDecorrido === 0) {
         return;
-      };
-
-      if (!this.idProjetos) {
-        this.store.commit(NOTIFICAR, {
-          title: "A tarefa não foi salva",
-          texto: "Você precisa selecionar um projeto.",
-          tipo: TipoNotificacao.FALHA,
-        });
-        return
       }
-        this.$emit("aoSalvarTarefa", {
-          duracaoEmSegundos: tempoDecorrido,
-          descricao: this.descricao,
-          projeto: this.projetos.find((proj) => proj.id == this.idProjetos),
-        });
-        this.descricao = "";
+
+      this.$emit("aoSalvarTarefa", {
+        duracaoEmSegundos: tempoDecorrido,
+        descricao: this.descricao,
+        projeto: this.projetos.find((proj) => proj.id == this.idProjetos),
+      });
+      this.descricao = "";
     },
   },
   setup() {
